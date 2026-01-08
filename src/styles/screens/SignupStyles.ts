@@ -1,51 +1,92 @@
+// Make sure your SignupStyles.ts has this structure:
 import { StyleSheet } from 'react-native';
 import { colors } from '../colors';
-import { spacing } from '../spacing';
-import { typography } from '../typography';
 
-const styles = StyleSheet.create({
+const SignupStyles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.background,
+  },
+  formContainer: {
+    flex: 1,
     justifyContent: 'center',
-    backgroundColor: colors.white,
-    padding: spacing.md,
+    paddingHorizontal: 30,
+    paddingVertical: 20,
   },
-
   title: {
-    fontSize: typography.title,
-    color: colors.primary,
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: colors.text,
+    marginBottom: 8,
     textAlign: 'center',
-    marginBottom: spacing.lg,
   },
-
+  subtitle: {
+    fontSize: 16,
+    color: colors.textSecondary,
+    marginBottom: 40,
+    textAlign: 'center',
+  },
+  inputContainer: {
+    marginBottom: 20,
+  },
   input: {
+    backgroundColor: colors.inputBackground,
     borderWidth: 1,
-    borderColor: colors.gray,
-    borderRadius: 6,
-    padding: spacing.sm,
-    marginBottom: spacing.md,
-    fontSize: typography.text,
+    borderColor: colors.inputBorder,
+    borderRadius: 8,
+    paddingHorizontal: 15,
+    paddingVertical: 15,
+    fontSize: 16,
+    color: colors.text,
+    marginBottom: 15,
   },
-
-  button: {
+  signupButton: {
     backgroundColor: colors.primary,
-    paddingVertical: spacing.sm,
-    borderRadius: 6,
+    borderRadius: 8,
+    paddingVertical: 16,
     alignItems: 'center',
-    marginTop: spacing.md,
+    marginBottom: 20,
   },
-
-  buttonText: {
-    color: colors.white,
-    fontSize: typography.text,
-    fontWeight: '500',
+  signupButtonDisabled: {
+    backgroundColor: colors.buttonDisabled,
   },
-
-  link: {
+  signupButtonText: {
+    color: colors.buttonText,
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  loginContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  loginText: {
+    color: colors.textSecondary,
+    fontSize: 14,
+  },
+  loginLink: {
     color: colors.primary,
+    fontSize: 14,
+    fontWeight: '600',
+  },
+  termsContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    marginTop: 20,
+    paddingHorizontal: 20,
+  },
+  termsText: {
+    color: colors.textSecondary,
+    fontSize: 12,
     textAlign: 'center',
-    marginTop: spacing.md,
+    lineHeight: 16,
+  },
+  termsLink: {
+    color: colors.primary,
+    fontSize: 12,
+    fontWeight: '600',
   },
 });
 
-export default styles;
+export default SignupStyles;

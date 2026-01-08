@@ -1,24 +1,79 @@
 import { StyleSheet } from 'react-native';
 import { colors } from '../colors';
-import { spacing } from '../spacing';
-import { typography } from '../typography';
 
-export default StyleSheet.create({
+export const LoginStyles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: colors.background,
+  },
+  formContainer: {
+    flex: 1,
     justifyContent: 'center',
-    padding: spacing.md,
-    backgroundColor: colors.white,
+    paddingHorizontal: 30,
   },
   title: {
-    fontSize: typography.title,
-    color: colors.primary,
-    marginBottom: spacing.md,
+    fontSize: 32,
+    fontWeight: 'bold',
+    color: colors.text,
+    marginBottom: 8,
     textAlign: 'center',
   },
-  link: {
-    color: colors.primary,
+  subtitle: {
+    fontSize: 16,
+    color: colors.textSecondary,
+    marginBottom: 40,
     textAlign: 'center',
-    marginTop: spacing.sm,
+  },
+  inputContainer: {
+    marginBottom: 20,
+  },
+  input: {
+    backgroundColor: colors.inputBackground,
+    borderWidth: 1,
+    borderColor: colors.inputBorder,
+    borderRadius: 8,
+    paddingHorizontal: 15,
+    paddingVertical: 15,
+    fontSize: 16,
+    color: colors.text,
+    marginBottom: 15,
+  },
+  forgotPasswordButton: {
+    alignSelf: 'flex-end',
+    marginBottom: 25,
+  },
+  forgotPasswordText: {
+    color: colors.primary,
+    fontSize: 14,
+    fontWeight: '500',
+  },
+  loginButton: {
+    backgroundColor: colors.primary,
+    borderRadius: 8,
+    paddingVertical: 16,
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  loginButtonDisabled: {
+    backgroundColor: colors.buttonDisabled,
+  },
+  loginButtonText: {
+    color: colors.buttonText,
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  signupContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginTop: 20,
+  },
+  signupText: {
+    color: colors.textSecondary,
+    fontSize: 14,
+  },
+  signupLink: {
+    color: colors.primary,
+    fontSize: 14,
+    fontWeight: '600',
   },
 });

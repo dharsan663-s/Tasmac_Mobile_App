@@ -1,61 +1,83 @@
 import { StyleSheet } from 'react-native';
 import { colors } from '../colors';
-import { spacing } from '../spacing';
-import { typography } from '../typography';
 
-const styles = StyleSheet.create({
+export const HomeStyles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
-    padding: spacing.md,
+    backgroundColor: colors.background,
   },
-
   header: {
-    marginBottom: spacing.lg,
+    paddingHorizontal: 20,
+    paddingTop: 20,
+    paddingBottom: 20,
+    backgroundColor: colors.cardBackground,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
   },
-
-  title: {
-    fontSize: typography.title,
-    fontWeight: '600',
-    color: colors.primary,
+  welcomeText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: colors.text,
+    marginBottom: 5,
   },
-
-  subtitle: {
-    fontSize: typography.text,
-    color: colors.gray,
-    marginTop: spacing.sm,
+  dateText: {
+    fontSize: 14,
+    color: colors.textSecondary,
   },
-
-  card: {
-    backgroundColor: colors.white,
-    padding: spacing.md,
-    borderRadius: 8,
-    marginBottom: spacing.md,
-    elevation: 2, // Android shadow
-    shadowColor: '#000', // iOS shadow
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    shadowOffset: { width: 0, height: 2 },
+  statsContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: 20,
+    paddingVertical: 15,
   },
-
-  cardText: {
-    fontSize: typography.text,
-    color: colors.black,
+  actionsContainer: {
+    paddingHorizontal: 20,
+    paddingVertical: 20,
   },
-
-  button: {
-    marginTop: spacing.lg,
+  primaryActionButton: {
     backgroundColor: colors.primary,
-    paddingVertical: spacing.sm,
-    borderRadius: 6,
+    borderRadius: 10,
+    paddingVertical: 16,
+    alignItems: 'center',
+    marginBottom: 10,
+  },
+  primaryActionButtonText: {
+    color: colors.textInverse,
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  secondaryActionButton: {
+    backgroundColor: colors.cardBackground,
+    borderWidth: 1,
+    borderColor: colors.primary,
+    borderRadius: 10,
+    paddingVertical: 16,
     alignItems: 'center',
   },
-
-  buttonText: {
-    color: colors.white,
-    fontSize: typography.text,
+  secondaryActionButtonText: {
+    color: colors.primary,
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  recentScansContainer: {
+    paddingHorizontal: 20,
+    paddingTop: 10,
+    paddingBottom: 30,
+  },
+  sectionHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 15,
+  },
+  sectionTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    color: colors.text,
+  },
+  seeAllText: {
+    fontSize: 14,
+    color: colors.primary,
     fontWeight: '500',
   },
 });
-
-export default styles;
