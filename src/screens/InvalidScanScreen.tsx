@@ -10,6 +10,7 @@ import {
 import { CommonStyles } from '../styles/commonStyles';
 import { colors } from '../styles/colors';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const InvalidScanScreen = ({ route, navigation }: any) => {
   const { scanData, scanType } = route.params || {};
@@ -55,6 +56,7 @@ const InvalidScanScreen = ({ route, navigation }: any) => {
   };
 
   return (
+    <SafeAreaView style={{ flex: 1 }} edges={['top']}>
     <View style={CommonStyles.container}>
       <View style={{ alignItems: 'center', marginVertical: 40 }}>
         <View
@@ -202,6 +204,7 @@ const InvalidScanScreen = ({ route, navigation }: any) => {
         </View>
       </Modal>
     </View>
+    </SafeAreaView>
   );
 };
 

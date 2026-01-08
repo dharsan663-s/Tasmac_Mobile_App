@@ -3,6 +3,7 @@ import { View, Text, TouchableOpacity, Alert } from 'react-native';
 import { CommonStyles } from '../styles/commonStyles';
 import { colors } from '../styles/colors';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const ValidScanScreen = ({ route, navigation }: any) => {
   const { scanData, scanType } = route.params || {};
@@ -18,6 +19,7 @@ const ValidScanScreen = ({ route, navigation }: any) => {
   };
 
   return (
+    <SafeAreaView style={{ flex: 1 }} edges={['top']}>
     <View style={CommonStyles.container}>
       <View style={{ alignItems: 'center', marginVertical: 40 }}>
         <View
@@ -89,6 +91,7 @@ const ValidScanScreen = ({ route, navigation }: any) => {
         </TouchableOpacity>
       </View>
     </View>
+    </SafeAreaView>
   );
 };
 

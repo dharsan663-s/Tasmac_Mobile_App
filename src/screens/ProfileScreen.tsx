@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import { ProfileStyles } from '../styles/screens/ProfileStyles';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const ProfileScreen = ({ navigation }: any) => {
   const [user, setUser] = useState({
@@ -51,6 +52,7 @@ const ProfileScreen = ({ navigation }: any) => {
   ];
 
   return (
+    <SafeAreaView style={{ flex: 1 }} edges={['top']}>
     <ScrollView style={ProfileStyles.container}>
       <View style={ProfileStyles.header}>
         <View style={ProfileStyles.avatarContainer}>
@@ -134,6 +136,7 @@ const ProfileScreen = ({ navigation }: any) => {
         </TouchableOpacity>
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 };
 

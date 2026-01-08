@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 import { CommonStyles } from '../styles/commonStyles';
 import { colors } from '../styles/colors';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const ForgotPasswordScreen = ({ navigation }: any) => {
   const [email, setEmail] = useState('');
@@ -34,6 +35,7 @@ const ForgotPasswordScreen = ({ navigation }: any) => {
   };
 
   return (
+    <SafeAreaView style={{ flex: 1 }} edges={['top']}>
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={CommonStyles.container}
@@ -73,6 +75,7 @@ const ForgotPasswordScreen = ({ navigation }: any) => {
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 

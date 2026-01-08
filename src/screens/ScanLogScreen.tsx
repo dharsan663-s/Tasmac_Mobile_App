@@ -11,6 +11,7 @@ import {
 import { CommonStyles } from '../styles/commonStyles';
 import { colors } from '../styles/colors';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface ScanLog {
   id: string;
@@ -157,6 +158,7 @@ const ScanLogScreen = ({ navigation }: any) => {
   );
 
   return (
+    <SafeAreaView style={{ flex: 1 }} edges={['top']}>
     <View style={CommonStyles.container}>
       <View style={{ paddingHorizontal: 20, paddingTop: 20 }}>
         <TextInput
@@ -332,6 +334,7 @@ const ScanLogScreen = ({ navigation }: any) => {
         </View>
       </Modal>
     </View>
+    </SafeAreaView>
   );
 };
 

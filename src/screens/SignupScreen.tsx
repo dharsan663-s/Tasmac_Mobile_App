@@ -12,6 +12,8 @@ import {
 } from 'react-native';
 import styles from '../styles/screens/SignupStyles';
 import { colors } from '../styles/colors';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 interface SignupScreenProps {
   navigation: any;
@@ -94,6 +96,7 @@ const SignupScreen: React.FC<SignupScreenProps> = ({ navigation }) => {
   };
 
   return (
+    <SafeAreaView style={{ flex: 1 }} edges={['top']}>
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={styles.container}
@@ -216,6 +219,7 @@ const SignupScreen: React.FC<SignupScreenProps> = ({ navigation }) => {
         </View>
       </ScrollView>
     </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 

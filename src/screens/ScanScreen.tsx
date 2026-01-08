@@ -12,6 +12,7 @@ import {
 import { CommonStyles } from '../styles/commonStyles';
 import { colors } from '../styles/colors';
 import Icon from 'react-native-vector-icons/MaterialIcons';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 interface ScanScreenProps {
   navigation: any;
@@ -223,6 +224,7 @@ const ScanScreen: React.FC<ScanScreenProps> = ({ navigation }) => {
   }
 
   return (
+      <SafeAreaView style={{ flex: 1 }} edges={['top']}>
     <View style={CommonStyles.container}>
       <Text style={CommonStyles.title}>Scan Code</Text>
       <Text style={CommonStyles.subtitle}>
@@ -389,6 +391,7 @@ const ScanScreen: React.FC<ScanScreenProps> = ({ navigation }) => {
         </View>
       )}
     </View>
+    </SafeAreaView>
   );
 };
 

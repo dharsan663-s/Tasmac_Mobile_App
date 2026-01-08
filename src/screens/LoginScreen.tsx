@@ -9,6 +9,8 @@ import {
   Alert,
 } from 'react-native';
 import { LoginStyles } from '../styles/screens/LoginStyles';
+import { SafeAreaView } from 'react-native-safe-area-context';
+
 
 interface LoginScreenProps {
   navigation: any;
@@ -39,6 +41,8 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
   };
 
   return (
+    <SafeAreaView style={{ flex: 1 }} edges={['top']}>
+
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       style={LoginStyles.container}
@@ -90,6 +94,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         </View>
       </View>
     </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 

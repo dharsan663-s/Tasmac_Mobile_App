@@ -11,6 +11,7 @@ import {
 import { HomeStyles } from '../styles/screens/HomeStyles';
 import ScanStatsCard from '../components/ScanStatsCard';
 import RecentScansList from '../components/RecentScansList';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 const { width } = Dimensions.get('window');
 
@@ -75,6 +76,7 @@ const HomeScreen = ({ navigation }: any) => {
   };
 
   return (
+    <SafeAreaView style={{ flex: 1 }} edges={['top']}>
     <ScrollView
       style={HomeStyles.container}
       refreshControl={
@@ -142,6 +144,7 @@ const HomeScreen = ({ navigation }: any) => {
         <RecentScansList scans={recentScans} />
       </View>
     </ScrollView>
+    </SafeAreaView>
   );
 };
 
