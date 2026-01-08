@@ -18,49 +18,8 @@ import ScanLogScreen from '../screens/ScanLogScreen';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-function ScanTabStack() {
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Scan" component={ScanScreen} />
-      <Stack.Screen 
-        name="ValidScan" 
-        component={ValidScanScreen}
-        options={{ presentation: 'modal' }}
-      />
-      <Stack.Screen 
-        name="InvalidScan" 
-        component={InvalidScanScreen}
-        options={{ presentation: 'modal' }}
-      />
-    </Stack.Navigator>
-  );
-}
-
-function ScanLogTabStack() {
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="ScanLog" component={ScanLogScreen} />
-    </Stack.Navigator>
-  );
-}
-
-function ProfileTabStack() {
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Profile" component={ProfileScreen} />
-    </Stack.Navigator>
-  );
-}
-
-function HomeTabStack() {
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Home" component={HomeScreen} />
-    </Stack.Navigator>
-  );
-}
-
-function MainTabs() {
+// Main Tab Navigator
+function MainTabNavigator() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -68,7 +27,7 @@ function MainTabs() {
           let iconName;
 
           if (route.name === 'HomeTab') {
-            iconName = focused ? 'dashboard' : 'dashboard';
+            iconName = focused ? 'home' : 'home';
           } else if (route.name === 'ScanTab') {
             iconName = focused ? 'qr-code-scanner' : 'qr-code-scanner';
           } else if (route.name === 'ScanLogTab') {
@@ -86,22 +45,22 @@ function MainTabs() {
     >
       <Tab.Screen 
         name="HomeTab" 
-        component={HomeTabStack}
+        component={HomeScreen}
         options={{ title: 'Home' }}
       />
       <Tab.Screen 
         name="ScanTab" 
-        component={ScanTabStack}
+        component={ScanScreen}
         options={{ title: 'Scan' }}
       />
       <Tab.Screen 
         name="ScanLogTab" 
-        component={ScanLogTabStack}
+        component={ScanLogScreen}
         options={{ title: 'Scan Log' }}
       />
       <Tab.Screen 
         name="ProfileTab" 
-        component={ProfileTabStack}
+        component={ProfileScreen}
         options={{ title: 'Profile' }}
       />
     </Tab.Navigator>
@@ -128,12 +87,26 @@ function AppNavigator() {
         options={{ title: 'Reset Password' }}
       />
       
-      {/* Main App Tabs */}
+      {/* Main App with Tabs */}
       <Stack.Screen 
         name="Main" 
-        component={MainTabs}
+        component={MainTabNavigator}
         options={{ headerShown: false }}
       />
+      
+      {/* Modal/Overlay Screens */}
+      <Stack.Group screenOptions={{ presentation: 'modal' }}>
+        <Stack.Screen 
+          name="ValidScan" 
+          component={ValidScanScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen 
+          name="InvalidScan" 
+          component={InvalidScanScreen}
+          options={{ headerShown: false }}
+        />
+      </Stack.Group>
     </Stack.Navigator>
   );
 }

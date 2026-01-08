@@ -56,14 +56,15 @@ const HomeScreen = ({ navigation }: any) => {
   }, []);
 
   const navigateToScan = () => {
-    navigation.navigate('Scan');
+    // Navigate to Scan tab
+    navigation.navigate('ScanTab');
   };
 
   const navigateToScanLog = () => {
-    navigation.navigate('ScanLog');
+    // Navigate to Scan Log tab
+    navigation.navigate('ScanLogTab');
   };
 
-  // Format date as shown in your screenshot
   const formatDate = () => {
     const date = new Date();
     const options: Intl.DateTimeFormatOptions = { 
@@ -77,73 +78,73 @@ const HomeScreen = ({ navigation }: any) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }} edges={['top']}>
-    <ScrollView
-      style={HomeStyles.container}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-      showsVerticalScrollIndicator={false}
-    >
-      <View style={HomeStyles.header}>
-        <Text style={HomeStyles.welcomeText}>Good Morning!</Text>
-        <Text style={HomeStyles.dateText}>
-          {formatDate()}
-        </Text>
-      </View>
-
-      <View style={styles.statsRow}>
-        <View style={styles.statCardWrapper}>
-          <ScanStatsCard
-            title="Total Scans"
-            value={todayStats.totalScans.toString()}
-            icon="scan"
-            color="#4CAF50"
-          />
+      <ScrollView
+        style={HomeStyles.container}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        showsVerticalScrollIndicator={false}
+      >
+        <View style={HomeStyles.header}>
+          <Text style={HomeStyles.welcomeText}>Good Morning!</Text>
+          <Text style={HomeStyles.dateText}>
+            {formatDate()}
+          </Text>
         </View>
-        <View style={styles.statCardWrapper}>
-          <ScanStatsCard
-            title="Valid Scans"
-            value={todayStats.validScans.toString()}
-            icon="check-circle"
-            color="#2196F3"
-          />
+
+        <View style={styles.statsRow}>
+          <View style={styles.statCardWrapper}>
+            <ScanStatsCard
+              title="Total Scans"
+              value={todayStats.totalScans.toString()}
+              icon="scan"
+              color="#4CAF50"
+            />
+          </View>
+          <View style={styles.statCardWrapper}>
+            <ScanStatsCard
+              title="Valid Scans"
+              value={todayStats.validScans.toString()}
+              icon="check-circle"
+              color="#2196F3"
+            />
+          </View>
+          <View style={styles.statCardWrapper}>
+            <ScanStatsCard
+              title="Invalid Scans"
+              value={todayStats.invalidScans.toString()}
+              icon="error"
+              color="#FF9800"
+            />
+          </View>
         </View>
-        <View style={styles.statCardWrapper}>
-          <ScanStatsCard
-            title="Invalid Scans"
-            value={todayStats.invalidScans.toString()}
-            icon="error"
-            color="#FF9800"
-          />
-        </View>
-      </View>
 
-      <View style={HomeStyles.actionsContainer}>
-        <TouchableOpacity
-          style={HomeStyles.primaryActionButton}
-          onPress={navigateToScan}
-        >
-          <Text style={HomeStyles.primaryActionButtonText}>Start Scanning</Text>
-        </TouchableOpacity>
+        <View style={HomeStyles.actionsContainer}>
+          <TouchableOpacity
+            style={HomeStyles.primaryActionButton}
+            onPress={navigateToScan}
+          >
+            <Text style={HomeStyles.primaryActionButtonText}>Start Scanning</Text>
+          </TouchableOpacity>
 
-        <TouchableOpacity
-          style={HomeStyles.secondaryActionButton}
-          onPress={navigateToScanLog}
-        >
-          <Text style={HomeStyles.secondaryActionButtonText}>View Scan Log</Text>
-        </TouchableOpacity>
-      </View>
-
-      <View style={HomeStyles.recentScansContainer}>
-        <View style={HomeStyles.sectionHeader}>
-          <Text style={HomeStyles.sectionTitle}>Recent Scans</Text>
-          <TouchableOpacity onPress={navigateToScanLog}>
-            <Text style={HomeStyles.seeAllText}>See All</Text>
+          <TouchableOpacity
+            style={HomeStyles.secondaryActionButton}
+            onPress={navigateToScanLog}
+          >
+            <Text style={HomeStyles.secondaryActionButtonText}>View Scan Log</Text>
           </TouchableOpacity>
         </View>
-        <RecentScansList scans={recentScans} />
-      </View>
-    </ScrollView>
+
+        <View style={HomeStyles.recentScansContainer}>
+          <View style={HomeStyles.sectionHeader}>
+            <Text style={HomeStyles.sectionTitle}>Recent Scans</Text>
+            <TouchableOpacity onPress={navigateToScanLog}>
+              <Text style={HomeStyles.seeAllText}>See All</Text>
+            </TouchableOpacity>
+          </View>
+          <RecentScansList scans={recentScans} />
+        </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -156,7 +157,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   statCardWrapper: {
-    width: (width - 40) / 3, // 40 = padding (15+15) + margins
+    width: (width - 40) / 3,
   },
 });
 

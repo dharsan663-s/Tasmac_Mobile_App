@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Alert } from 'react-native';
 import { CommonStyles } from '../styles/commonStyles';
 import { colors } from '../styles/colors';
 import Icon from 'react-native-vector-icons/MaterialIcons';
@@ -8,47 +8,37 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 const ValidScanScreen = ({ route, navigation }: any) => {
   const { scanData, scanType } = route.params || {};
 
-// In ValidScanScreen.tsx, update the handleAddToLog function:
-const handleAddToLog = () => {
-  console.log('📱 ValidScanScreen - Adding to scan log:', scanData);
-  
-  // Navigate to ScanLog screen in the tab navigator
-  navigation.navigate('ScanLogTab', {
-    screen: 'ScanLogMain',
-    params: {
-      newScan: {
-        code: scanData || 'Unknown',
-        type: scanType || 'barcode',
-        status: 'valid',
-        productName: 'Scanned Device',
-        location: 'Repair Center',
-        details: `Scanned from ${scanType === 'qr' ? 'QR Code' : 'Barcode'} scanner`,
-        timestamp: new Date().toISOString(),
-      }
-    }
-  });
-};
+  const handleAddToLog = () => {
+    console.log('Adding to scan log:', scanData);
+    
+    // Navigate to Scan Log tab and add the scan
+    navigation.navigate('ScanLogTab');
+    
+    // Show success message
+    Alert.alert(
+      'Success',
+      'Scan added to log successfully!',
+      [{ text: 'OK' }]
+    );
+  };
 
-// Update handleScanAgain:
-const handleScanAgain = () => {
-  navigation.goBack(); // Go back to ScanScreen
-};
+  const handleScanAgain = () => {
+    navigation.goBack(); // Go back to ScanScreen
+  };
 
-// Update handleGoBack:
-const handleGoBack = () => {
-  navigation.goBack();
-};
+  const handleGoBack = () => {
+    navigation.goBack();
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }} edges={['top']}>
       <View style={CommonStyles.container}>
-        {/* Header with back button */}
         <View style={styles.header}>
           <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
             <Icon name="arrow-back" size={24} color={colors.text} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Scan Result</Text>
-          <View style={{ width: 40 }} /> {/* Spacer for alignment */}
+          <View style={{ width: 40 }} />
         </View>
 
         <View style={{ alignItems: 'center', marginVertical: 40 }}>

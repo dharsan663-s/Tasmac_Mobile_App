@@ -26,23 +26,7 @@ interface ScanLog {
   details?: string;
 }
 
-interface ScanLogScreenProps {
-  navigation: any;
-  route?: {
-    params?: {
-      newScan?: {
-        code: string;
-        type: 'qr' | 'barcode' | 'manual';
-        status: 'valid' | 'invalid';
-        productName?: string;
-        location?: string;
-        details?: string;
-      };
-    };
-  };
-}
-
-const ScanLogScreen: React.FC<ScanLogScreenProps> = ({ navigation, route }) => {
+const ScanLogScreen = ({ navigation }: any) => {
   const [scans, setScans] = useState<ScanLog[]>([]);
   const [filteredScans, setFilteredScans] = useState<ScanLog[]>([]);
   const [refreshing, setRefreshing] = useState(false);
@@ -51,7 +35,6 @@ const ScanLogScreen: React.FC<ScanLogScreenProps> = ({ navigation, route }) => {
   const [selectedFilter, setSelectedFilter] = useState<'all' | 'valid' | 'invalid'>('all');
   const [dateFilter, setDateFilter] = useState<'all' | 'today' | 'week' | 'month'>('all');
 
-  // Initial mock data
   const initialScans: ScanLog[] = [
     { id: '1', code: 'QR123456', type: 'qr', status: 'valid', timestamp: '2024-01-08 10:30:00', productName: 'Product A', location: 'Warehouse 1' },
     { id: '2', code: '890123456789', type: 'barcode', status: 'invalid', timestamp: '2024-01-08 10:15:00', location: 'Store 3' },
@@ -60,53 +43,7 @@ const ScanLogScreen: React.FC<ScanLogScreenProps> = ({ navigation, route }) => {
     { id: '5', code: 'Manual123', type: 'manual', status: 'invalid', timestamp: '2024-01-05 16:10:00' },
   ];
 
-  // Function to add new scan log
-  const addScanLog = (newScan: Omit<ScanLog, 'id' | 'timestamp'>) => {
-    const timestamp = new Date().toLocaleString('en-US', {
-      year: 'numeric',
-      month: '2-digit',
-      day: '2-digit',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: false
-    }).replace(',', '');
-
-    const newLog: ScanLog = {
-      id: Date.now().toString(),
-      ...newScan,
-      timestamp,
-    };
-
-    setScans(prev => [newLog, ...prev]);
-    
-    // Show success message
-    Alert.alert(
-      'Scan Log Added',
-      `Successfully added ${newScan.code} to scan log`,
-      [{ text: 'OK' }]
-    );
-
-    console.log('✅ ScanLogScreen - Added new scan:', newLog);
-
-    return newLog;
-  };
-
-  // Check for new scan from navigation params
-  useEffect(() => {
-    console.log('📱 ScanLogScreen - Route params:', route?.params);
-    if (route?.params?.newScan) {
-      const { newScan } = route.params;
-      console.log('📱 ScanLogScreen - Adding new scan from params:', newScan);
-      addScanLog(newScan);
-      
-      // Clear params after processing
-      navigation.setParams({ newScan: undefined });
-    }
-  }, [route?.params?.newScan]);
-
   const loadScans = () => {
-    // In real app, fetch from API/local storage
     setScans(initialScans);
     applyFilters(initialScans, searchQuery, selectedFilter, dateFilter);
   };
@@ -114,7 +51,6 @@ const ScanLogScreen: React.FC<ScanLogScreenProps> = ({ navigation, route }) => {
   const applyFilters = (data: ScanLog[], query: string, statusFilter: string, dateRange: string) => {
     let filtered = [...data];
 
-    // Search filter
     if (query) {
       filtered = filtered.filter(scan =>
         scan.code.toLowerCase().includes(query.toLowerCase()) ||
@@ -124,12 +60,10 @@ const ScanLogScreen: React.FC<ScanLogScreenProps> = ({ navigation, route }) => {
       );
     }
 
-    // Status filter
     if (statusFilter !== 'all') {
       filtered = filtered.filter(scan => scan.status === statusFilter);
     }
 
-    // Date filter
     if (dateRange !== 'all') {
       const now = new Date();
       filtered = filtered.filter(scan => {
@@ -149,7 +83,6 @@ const ScanLogScreen: React.FC<ScanLogScreenProps> = ({ navigation, route }) => {
       });
     }
 
-    // Sort by timestamp (newest first)
     filtered.sort((a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime());
     
     setFilteredScans(filtered);
@@ -177,15 +110,18 @@ const ScanLogScreen: React.FC<ScanLogScreenProps> = ({ navigation, route }) => {
         { text: 'Cancel', style: 'cancel' },
         { 
           text: 'Add', 
-          onPress: (code: string | undefined) => { // Fixed: code can be undefined
+          onPress: (code: string | undefined) => {
             if (code && code.trim()) {
-              const newScan: Omit<ScanLog, 'id' | 'timestamp'> = {
+              const newScan: ScanLog = {
+                id: Date.now().toString(),
                 code: code.trim(),
                 type: 'manual',
                 status: 'valid',
                 productName: 'Manually Added',
+                timestamp: new Date().toLocaleString(),
               };
-              addScanLog(newScan);
+              setScans(prev => [newScan, ...prev]);
+              Alert.alert('Success', 'Scan added successfully!');
             }
           }
         }
@@ -194,21 +130,7 @@ const ScanLogScreen: React.FC<ScanLogScreenProps> = ({ navigation, route }) => {
   };
 
   const handleGoToScan = () => {
-    console.log('📱 ScanLogScreen - Navigating to Scan tab');
-    navigation.navigate('ScanTab', {
-      screen: 'Scan'
-    });
-  };
-
-  const handleGoBack = () => {
-    // Go back to previous screen or to Home if no history
-    if (navigation.canGoBack()) {
-      navigation.goBack();
-    } else {
-      navigation.navigate('HomeTab', {
-        screen: 'Home'
-      });
-    }
+    navigation.navigate('ScanTab');
   };
 
   const renderScanItem = ({ item }: { item: ScanLog }) => (
@@ -277,18 +199,13 @@ const ScanLogScreen: React.FC<ScanLogScreenProps> = ({ navigation, route }) => {
   return (
     <SafeAreaView style={{ flex: 1 }} edges={['top']}>
       <View style={CommonStyles.container}>
-        {/* Header with Back Button */}
         <View style={styles.header}>
-          <TouchableOpacity onPress={handleGoBack} style={styles.backButton}>
-            <Icon name="arrow-back" size={24} color={colors.text} />
-          </TouchableOpacity>
           <Text style={styles.headerTitle}>Scan Log</Text>
           <TouchableOpacity onPress={handleManualAdd} style={styles.addButton}>
             <Icon name="add" size={24} color="white" />
           </TouchableOpacity>
         </View>
 
-        {/* Search and Filter Section */}
         <View style={{ paddingHorizontal: 20, paddingTop: 15 }}>
           <TextInput
             style={[
@@ -350,7 +267,6 @@ const ScanLogScreen: React.FC<ScanLogScreenProps> = ({ navigation, route }) => {
           </View>
         </View>
 
-        {/* Scan List */}
         <FlatList
           data={filteredScans}
           renderItem={renderScanItem}
@@ -381,21 +297,8 @@ const ScanLogScreen: React.FC<ScanLogScreenProps> = ({ navigation, route }) => {
               </TouchableOpacity>
             </View>
           }
-          ListHeaderComponent={
-            filteredScans.length > 0 ? (
-              <Text style={{ 
-                fontSize: 12, 
-                color: colors.textSecondary, 
-                marginBottom: 10,
-                fontStyle: 'italic' 
-              }}>
-                Tap on any scan to view details
-              </Text>
-            ) : null
-          }
         />
 
-        {/* Filter Modal */}
         <Modal
           animationType="slide"
           transparent={true}
@@ -521,14 +424,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderBottomWidth: 1,
     borderBottomColor: '#f0f0f0',
-  },
-  backButton: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#f0f0f0',
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   headerTitle: {
     fontSize: 24,

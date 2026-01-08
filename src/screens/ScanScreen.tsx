@@ -21,7 +21,6 @@ const { width, height } = Dimensions.get('window');
 const SCAN_SIZE = width * 0.7;
 const BORDER_WIDTH = 2;
 
-// Define types for the scanned code
 interface ScannedCode {
   value?: string;
   type?: string;
@@ -38,7 +37,6 @@ const ScanScreen = ({ navigation, route }: any) => {
   const [scanLineAnim] = useState(new Animated.Value(0));
   const [lastScannedCode, setLastScannedCode] = useState<string | null>(null);
 
-  // Animation for scanning line
   useEffect(() => {
     if (!scanned) {
       const animateScanLine = () => {
@@ -71,70 +69,38 @@ const ScanScreen = ({ navigation, route }: any) => {
         const value = code?.value;
         const type = code?.type;
         
-        // Check if value exists and is a valid string
         if (!value || typeof value !== 'string' || value.trim() === '') {
-          console.log('📱 ScanScreen - Invalid or empty code value:', code);
+          console.log('Invalid or empty code value:', code);
           return;
         }
 
-        console.log('📱 ScanScreen - Code Scanned:', {
-          value,
-          type,
-          timestamp: new Date().toISOString(),
-          scannedStatus: scanned
-        });
-
-        // Check if we've already scanned this code recently
         if (lastScannedCode === value) {
-          console.log('📱 ScanScreen - Duplicate scan detected, ignoring');
+          console.log('Duplicate scan detected, ignoring');
           return;
         }
 
         setScanned(true);
         setLastScannedCode(value);
         
-        // Log the scan event
-        console.log('📱 ScanScreen - Processing scan:', {
-          value: value.substring(0, 20) + '...',
-          length: value.length,
-          type
-        });
-
-        // Small delay for visual feedback
         setTimeout(() => {
           try {
-            console.log('📱 ScanScreen - Navigating to ValidScan with data:', {
+            // Navigate to ValidScan screen as a modal
+            navigation.navigate('ValidScan', {
               scanData: value,
               scanType: 'barcode',
-              screen: 'ValidScan'
             });
-
-            // Check if ValidScan screen exists
-            if (navigation) {
-              // Navigate to ValidScan screen
-              navigation.navigate('ValidScan', {
-                scanData: value,
-                scanType: 'barcode',
-              });
-              
-              // Log successful navigation
-              console.log('✅ ScanScreen - Navigation successful to ValidScan');
-            } else {
-              console.error('❌ ScanScreen - Navigation object is undefined');
-              Alert.alert('Error', 'Navigation not available');
-            }
+            
+            // Reset scanned state after navigation
+            setTimeout(() => {
+              setScanned(false);
+              setLastScannedCode(null);
+            }, 1000);
           } catch (error) {
-            console.error('❌ ScanScreen - Navigation error:', error);
-            Alert.alert('Navigation Error', 'Could not navigate to scan results');
+            console.error('Navigation error:', error);
+            Alert.alert('Error', 'Could not navigate to scan results');
+            setScanned(false);
           }
         }, 500);
-      } else if (codes.length > 0) {
-        const codeValue = codes[0]?.value;
-        if (codeValue) {
-          console.log('⚠️ ScanScreen - Ignoring scan, already processing:', {
-            value: codeValue.substring(0, 20) + '...'
-          });
-        }
       }
     },
   });
@@ -142,9 +108,9 @@ const ScanScreen = ({ navigation, route }: any) => {
   useEffect(() => {
     (async () => {
       try {
-        console.log('📱 ScanScreen - Requesting camera permission...');
+        console.log('Requesting camera permission...');
         const permission = await Camera.requestCameraPermission();
-        console.log('📱 ScanScreen - Camera permission:', permission);
+        console.log('Camera permission:', permission);
         setHasPermission(permission === 'granted');
         
         if (permission !== 'granted') {
@@ -159,7 +125,6 @@ const ScanScreen = ({ navigation, route }: any) => {
               {
                 text: 'Open Settings',
                 onPress: () => {
-                  // You might want to open app settings here
                   console.log('Opening settings...');
                 }
               }
@@ -167,41 +132,37 @@ const ScanScreen = ({ navigation, route }: any) => {
           );
         }
       } catch (error) {
-        console.error('❌ ScanScreen - Permission error:', error);
+        console.error('Permission error:', error);
         Alert.alert('Error', 'Failed to request camera permission');
       }
     })();
   }, []);
 
-// In ScanScreen.tsx, update the handleManualEntry function:
-const handleManualEntry = () => {
-  console.log('📱 ScanScreen - Manual entry button pressed');
-  navigation.navigate('ValidScan', {
-    scanData: 'Manual Entry',
-    scanType: 'manual',
-  });
-};
-
-// Update handleClose:
-const handleClose = () => {
-  console.log('📱 ScanScreen - Close button pressed');
-  if (navigation.canGoBack()) {
-    navigation.goBack();
-  } else {
-    // If no back history, navigate to Dashboard
-    navigation.navigate('DashboardTab', {
-      screen: 'HomeMain'
+  const handleManualEntry = () => {
+    console.log('Manual entry button pressed');
+    navigation.navigate('ValidScan', {
+      scanData: 'Manual Entry',
+      scanType: 'manual',
     });
-  }
-};
+  };
+
+  const handleClose = () => {
+    console.log('Close button pressed');
+    if (navigation.canGoBack()) {
+      navigation.goBack();
+    } else {
+      // Navigate to Home tab
+      navigation.navigate('HomeTab');
+    }
+  };
 
   const handleTorchToggle = () => {
-    console.log('📱 ScanScreen - Torch toggled:', !torchOn);
+    console.log('Torch toggled:', !torchOn);
     setTorchOn(!torchOn);
   };
 
   if (!device) {
-    console.log('📱 ScanScreen - No back camera device found');
+    console.log('No back camera device found');
     return (
       <View style={styles.loadingContainer}>
         <ActivityIndicator size="large" color="#4CAF50" />
@@ -240,8 +201,6 @@ const handleClose = () => {
     outputRange: [0, SCAN_SIZE - 4]
   });
 
-  console.log('📱 ScanScreen - Rendering, scanned:', scanned);
-
   return (
     <SafeAreaView style={styles.container}>
       <Camera
@@ -255,26 +214,17 @@ const handleClose = () => {
 
       {/* Overlay */}
       <View style={styles.overlay}>
-        {/* Top semi-transparent overlay */}
         <View style={[styles.overlaySection, { height: (height - SCAN_SIZE) / 2 }]} />
         
-        {/* Middle section with scanning frame */}
         <View style={styles.middleSection}>
-          {/* Left semi-transparent overlay */}
           <View style={[styles.overlaySection, { width: (width - SCAN_SIZE) / 2 }]} />
           
-          {/* Scanning frame */}
           <View style={styles.scanFrame}>
-            {/* Top-left corner */}
             <View style={styles.cornerTopLeft} />
-            {/* Top-right corner */}
             <View style={styles.cornerTopRight} />
-            {/* Bottom-left corner */}
             <View style={styles.cornerBottomLeft} />
-            {/* Bottom-right corner */}
             <View style={styles.cornerBottomRight} />
             
-            {/* Scanning line */}
             <Animated.View 
               style={[
                 styles.scanLine,
@@ -285,15 +235,12 @@ const handleClose = () => {
             />
           </View>
           
-          {/* Right semi-transparent overlay */}
           <View style={[styles.overlaySection, { width: (width - SCAN_SIZE) / 2 }]} />
         </View>
         
-        {/* Bottom semi-transparent overlay */}
         <View style={[styles.overlaySection, { height: (height - SCAN_SIZE) / 2 }]} />
       </View>
 
-      {/* Instructions */}
       <View style={styles.instructionsContainer}>
         <Text style={styles.instructionText}>
           Align barcode within the frame
@@ -303,7 +250,6 @@ const handleClose = () => {
         </Text>
       </View>
 
-      {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity
           onPress={handleClose}
@@ -324,7 +270,6 @@ const handleClose = () => {
         </TouchableOpacity>
       </View>
 
-      {/* Manual Entry Button */}
       <TouchableOpacity
         style={styles.manualButton}
         onPress={handleManualEntry}
@@ -334,7 +279,6 @@ const handleClose = () => {
         <Text style={styles.manualButtonText}>Enter Manually</Text>
       </TouchableOpacity>
 
-      {/* Scan Indicator */}
       {scanned && (
         <View style={styles.scanIndicator}>
           <ActivityIndicator size="large" color="#4CAF50" />
@@ -342,7 +286,6 @@ const handleClose = () => {
         </View>
       )}
 
-      {/* Debug Info (visible only in development) */}
       {__DEV__ && (
         <View style={styles.debugInfo}>
           <Text style={styles.debugText}>
@@ -497,7 +440,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     paddingHorizontal: 20,
-    paddingTop: 10,
+    paddingTop: 50,
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
     paddingBottom: 15,
   },

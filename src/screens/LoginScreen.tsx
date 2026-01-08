@@ -11,7 +11,6 @@ import {
 import { LoginStyles } from '../styles/screens/LoginStyles';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-
 interface LoginScreenProps {
   navigation: any;
 }
@@ -31,8 +30,10 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
     // Simulate API call
     setTimeout(() => {
       setLoading(false);
-      // FIXED: Changed from 'Dashboard' to 'Main'
-      navigation.replace('Main');
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Main' }],
+      });
     }, 1500);
   };
 
@@ -42,60 +43,59 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
 
   return (
     <SafeAreaView style={{ flex: 1 }} edges={['top']}>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        style={LoginStyles.container}
+      >
+        <View style={LoginStyles.formContainer}>
+          <Text style={LoginStyles.title}>Welcome Back</Text>
+          <Text style={LoginStyles.subtitle}>Sign in to continue</Text>
 
-    <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-      style={LoginStyles.container}
-    >
-      <View style={LoginStyles.formContainer}>
-        <Text style={LoginStyles.title}>Welcome Back</Text>
-        <Text style={LoginStyles.subtitle}>Sign in to continue</Text>
-
-        <View style={LoginStyles.inputContainer}>
+          <View style={LoginStyles.inputContainer}>
             <TextInput
-            style={LoginStyles.input}
-            placeholder="Email"
-            placeholderTextColor="#999"   // 👈 add this
-            value={email}
-            onChangeText={setEmail}
-            autoCapitalize="none"
-            keyboardType="email-address"
+              style={LoginStyles.input}
+              placeholder="Email"
+              placeholderTextColor="#999"
+              value={email}
+              onChangeText={setEmail}
+              autoCapitalize="none"
+              keyboardType="email-address"
             />
             <TextInput
-            style={LoginStyles.input}
-            placeholder="Password"
-            placeholderTextColor="#999"   // 👈 add this
-            value={password}
-            onChangeText={setPassword}
-            secureTextEntry
+              style={LoginStyles.input}
+              placeholder="Password"
+              placeholderTextColor="#999"
+              value={password}
+              onChangeText={setPassword}
+              secureTextEntry
             />
-        </View>
+          </View>
 
-        <TouchableOpacity
-          style={LoginStyles.forgotPasswordButton}
-          onPress={handleForgotPassword}
-        >
-          <Text style={LoginStyles.forgotPasswordText}>Forgot Password?</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={[LoginStyles.loginButton, loading && LoginStyles.loginButtonDisabled]}
-          onPress={handleLogin}
-          disabled={loading}
-        >
-          <Text style={LoginStyles.loginButtonText}>
-            {loading ? 'Signing in...' : 'Sign In'}
-          </Text>
-        </TouchableOpacity>
-
-        <View style={LoginStyles.signupContainer}>
-          <Text style={LoginStyles.signupText}>Don't have an account? </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-            <Text style={LoginStyles.signupLink}>Sign Up</Text>
+          <TouchableOpacity
+            style={LoginStyles.forgotPasswordButton}
+            onPress={handleForgotPassword}
+          >
+            <Text style={LoginStyles.forgotPasswordText}>Forgot Password?</Text>
           </TouchableOpacity>
+
+          <TouchableOpacity
+            style={[LoginStyles.loginButton, loading && LoginStyles.loginButtonDisabled]}
+            onPress={handleLogin}
+            disabled={loading}
+          >
+            <Text style={LoginStyles.loginButtonText}>
+              {loading ? 'Signing in...' : 'Sign In'}
+            </Text>
+          </TouchableOpacity>
+
+          <View style={LoginStyles.signupContainer}>
+            <Text style={LoginStyles.signupText}>Don't have an account? </Text>
+            <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
+              <Text style={LoginStyles.signupLink}>Sign Up</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    </KeyboardAvoidingView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
