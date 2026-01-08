@@ -52,21 +52,23 @@ const LoginScreen: React.FC<LoginScreenProps> = ({ navigation }) => {
         <Text style={LoginStyles.subtitle}>Sign in to continue</Text>
 
         <View style={LoginStyles.inputContainer}>
-          <TextInput
+            <TextInput
             style={LoginStyles.input}
             placeholder="Email"
+            placeholderTextColor="#999"   // 👈 add this
             value={email}
             onChangeText={setEmail}
             autoCapitalize="none"
             keyboardType="email-address"
-          />
-          <TextInput
+            />
+            <TextInput
             style={LoginStyles.input}
             placeholder="Password"
+            placeholderTextColor="#999"   // 👈 add this
             value={password}
             onChangeText={setPassword}
             secureTextEntry
-          />
+            />
         </View>
 
         <TouchableOpacity

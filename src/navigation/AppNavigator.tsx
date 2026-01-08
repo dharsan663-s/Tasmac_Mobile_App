@@ -1,4 +1,4 @@
-// AppNavigator.tsx - REMOVE NavigationContainer from here
+// AppNavigator.tsx
 import React from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -18,6 +18,48 @@ import ScanLogScreen from '../screens/ScanLogScreen';
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+function ScanTabStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Scan" component={ScanScreen} />
+      <Stack.Screen 
+        name="ValidScan" 
+        component={ValidScanScreen}
+        options={{ presentation: 'modal' }}
+      />
+      <Stack.Screen 
+        name="InvalidScan" 
+        component={InvalidScanScreen}
+        options={{ presentation: 'modal' }}
+      />
+    </Stack.Navigator>
+  );
+}
+
+function ScanLogTabStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="ScanLog" component={ScanLogScreen} />
+    </Stack.Navigator>
+  );
+}
+
+function ProfileTabStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Profile" component={ProfileScreen} />
+    </Stack.Navigator>
+  );
+}
+
+function HomeTabStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Home" component={HomeScreen} />
+    </Stack.Navigator>
+  );
+}
+
 function MainTabs() {
   return (
     <Tab.Navigator
@@ -25,13 +67,13 @@ function MainTabs() {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
-          if (route.name === 'Dashboard') {
+          if (route.name === 'HomeTab') {
             iconName = focused ? 'dashboard' : 'dashboard';
-          } else if (route.name === 'Scan') {
+          } else if (route.name === 'ScanTab') {
             iconName = focused ? 'qr-code-scanner' : 'qr-code-scanner';
-          } else if (route.name === 'ScanLog') {
+          } else if (route.name === 'ScanLogTab') {
             iconName = focused ? 'history' : 'history';
-          } else if (route.name === 'Profile') {
+          } else if (route.name === 'ProfileTab') {
             iconName = focused ? 'person' : 'person-outline';
           }
 
@@ -42,17 +84,32 @@ function MainTabs() {
         headerShown: false,
       })}
     >
-      <Tab.Screen name="Dashboard" component={HomeScreen} />
-      <Tab.Screen name="Scan" component={ScanScreen} />
-      <Tab.Screen name="ScanLog" component={ScanLogScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen 
+        name="HomeTab" 
+        component={HomeTabStack}
+        options={{ title: 'Home' }}
+      />
+      <Tab.Screen 
+        name="ScanTab" 
+        component={ScanTabStack}
+        options={{ title: 'Scan' }}
+      />
+      <Tab.Screen 
+        name="ScanLogTab" 
+        component={ScanLogTabStack}
+        options={{ title: 'Scan Log' }}
+      />
+      <Tab.Screen 
+        name="ProfileTab" 
+        component={ProfileTabStack}
+        options={{ title: 'Profile' }}
+      />
     </Tab.Navigator>
   );
 }
 
 function AppNavigator() {
   return (
-    // REMOVE NavigationContainer from here
     <Stack.Navigator initialRouteName="Login">
       {/* Auth Screens */}
       <Stack.Screen 
@@ -71,30 +128,11 @@ function AppNavigator() {
         options={{ title: 'Reset Password' }}
       />
       
-      {/* Main App */}
+      {/* Main App Tabs */}
       <Stack.Screen 
         name="Main" 
         component={MainTabs}
         options={{ headerShown: false }}
-      />
-      
-      {/* Scan Result Screens */}
-      <Stack.Screen 
-        name="ValidScan" 
-        component={ValidScanScreen}
-        options={{ title: 'Valid Scan' }}
-      />
-      <Stack.Screen 
-        name="InvalidScan" 
-        component={InvalidScanScreen}
-        options={{ title: 'Invalid Scan' }}
-      />
-      
-      {/* Other Screens */}
-      <Stack.Screen 
-        name="ScanDetail" 
-        component={ScanLogScreen}
-        options={{ title: 'Scan Details' }}
       />
     </Stack.Navigator>
   );

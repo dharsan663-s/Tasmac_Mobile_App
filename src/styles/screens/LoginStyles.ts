@@ -36,6 +36,7 @@ export const LoginStyles = StyleSheet.create({
     paddingVertical: 15,
     fontSize: 16,
     color: colors.text,
+    
     marginBottom: 15,
   },
   forgotPasswordButton: {
